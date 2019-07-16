@@ -1,0 +1,119 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+data(anscombe)
+str(anscombe)
+```
+```{r}
+var(anscombe)
+```
+```{r}
+attach(anscombe)
+```
+
+```{r}
+sapply(anscombe, FUN = mean)
+```
+```{r}
+sapply(anscombe, FUN = var)
+```
+± Similarity of the 8 datasets on basis of mean() and var() :x and y values are same in each function output.
+
+±Boxplots of 8 datasets:
+```{r}
+boxplot(x1, horizontal = TRUE)
+```
+```{r}
+boxplot(x2, horizontal = TRUE)
+```
+
+box
+
+```{r}
+boxplot(x3, horizontal = TRUE)
+```
+```{r}
+boxplot(x3, horizontal = TRUE)
+```
+```{r}
+boxplot(x4, horizontal = TRUE)
+```
+```{r}
+boxplot(y1, horizontal = TRUE)
+```
+```{r}
+boxplot(y2, horizontal = TRUE)
+```
+```{r}
+boxplot(y3, horizontal = TRUE)
+```
+```{r}
+boxplot(y4, horizontal = TRUE)
+```
+```{r}
+sapply(anscombe, FUN = IQR)
+
+```
+
+```{r}
+library(e1071)
+sapply(anscombe, FUN = skewness)
+```
+±Plot:
+```{r}
+?plot()
+```
+
+±Using plot function/cor:
+```{r}
+library(tidyverse)
+
+x <- anscombe[ ,1:4]
+y <- anscombe[ ,5:8]
+
+cor(x,y)
+```
+```{r}
+diag( cor(x,y))
+```
+```{r}
+ggplot(data=anscombe, mapping=aes(x=x1, y=y1)) +
+  geom_point() +
+  labs(title="Pair 1") +
+  stat_smooth(method="lm", se= FALSE)
+  
+  
+
+```
+```{r}
+ggplot(data=anscombe, mapping=aes(x=x2, y=y2)) +
+  geom_point() +
+  labs(title="Pair 2") +
+  stat_smooth(method="lm", se= FALSE)
+```
+```{r}
+ggplot(data=anscombe, mapping=aes(x=x3, y=y3)) +
+  geom_point() +
+  labs(title="Pair 3") +
+  stat_smooth(method="lm", se= FALSE)
+```
+```{r}
+ggplot(data=anscombe, mapping=aes(x=x4, y=y4)) +
+  geom_point() +
+  labs(title="Pair 4") +
+  stat_smooth(method="lm", se= FALSE)
+```
+
+±Findings:
+1. Similarity of 8 datasets on basis of mean() and var(): appear similar however, no conclusions can be drawn in terms of the relationship between the pairs (i.e. x1, y1 etc.)  
+
+2. Boxplots: looking at each value in a separate graph shows further detial - an outlier in x4;  
+variance - y4 is left skewed , y3 qnd y4 are right skewed.
+
+3. Interpreting the 8 datasets as four sets of (x,y) data: the 4 sets deliver the same positive correlation (0.8) even though the relationships between each pair in the scatter graphs are different.
+
+
+
