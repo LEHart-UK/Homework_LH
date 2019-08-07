@@ -1,0 +1,57 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+library(tidyverse)
+library(CodeClanData)
+```
+
+```{r}
+IBM_stock_price
+
+```
+```{r}
+JNJ_stock_price
+```
+
+```{r}
+#Q2
+JNJ_stock_price_gathered <- gather(JNJ_stock_price, date, jnj_open)
+
+JNJ_stock_price_gathered
+```
+
+```{r}
+#Q3
+IBM_agents <- separate(IBM_stock_price, Agents, c("agent1", "agent2"),
+ sep = "/")
+
+IBM_agents
+
+```
+```{r}
+#Q4
+IBM_agent_data <- unite(IBM_agents, ID1, agent1, c("ID1", "agent1"), sep = "\\:")
+
+IBM_agent_data
+```
+```{r}
+IBM_agent_data <- unite(IBM_agents, ID2, agent2, c("ID2", "agent2"), sep = "\\:")
+
+IBM_agent_data
+```
+```{r}
+#Q5
+library(lubridate)
+IBM_data <- gather(IBM_agent_data, 'date', 'open')
+            
+IBM_data
+```
+
+```{r}
+open_stock_data <- full_join(IBM_data, JNJ_stock_price_gathered)
+open_stock_data
+```
+
