@@ -1,0 +1,105 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+library(tidyverse)
+library(ggplot2)
+library(mice)
+```
+```{r}
+#Q1
+#Load file/remove metadata
+women_in_gov <- read_csv("women_in_gov.csv", skip = 4)
+
+head(women_in_gov)
+
+```
+
+```{r}
+tail(women_in_gov)
+```
+```{r}
+#Q2 Fix column names
+
+names(women_in_gov)
+
+```
+```{r}
+women_in_gov_cols <- women_in_gov
+names(women_in_gov_cols) <- make.names(names(women_in_gov_cols))
+names(women_in_gov_cols)
+```
+
+```{r}
+#Q3 Deleting columns
+unique(women_in_gov_cols$X64)
+
+```
+```{r}
+unique(women_in_gov_cols$Indicator.Name)
+```
+```{r}
+unique(women_in_gov_cols$Indicator.Code)
+```
+```{r}
+women_in_gov_cols_clean <- women_in_gov_cols %>% select(-X64)
+head(women_in_gov_cols_clean)
+```
+```{r}
+library(dbplyr)
+#Q4 Renaming columns
+women_in_gov_renames <- women_in_gov_cols_clean %>% 
+  rename(country = Country.Name, code = Country.Code)
+head(women_in_gov_renames)
+```
+```{r}
+#Q5 wide to long format data
+women_in_gov_long <- gather(women_in_gov_renames, year, year = X1960:X2018)
+  
+head(women_in_gov_long)
+
+```
+```{r}
+tail(women_in_gov_long)
+```
+```{r}
+library(mice)
+#Q6
+is.na(women_in_gov_long$value)
+md.pattern(women_in_gov_long, rotate.names = TRUE)
+coord_flip()
+```
+```{r}
+#Missing values = 10466 in'values'
+unique(women_in_gov_long$value)
+
+women_in_gov_long %>%
+  summarise(count = sum(is.na(value)))
+```
+```{r}
+#To deal with the missing values - decision - treat as not available - too many against actual values shown to impute/adverse impact on data analysis. So use this method to ensure workign with numeric data.
+value_new_category <- women_in_gov_long %>%
+  mutate(value = replace(value, is.na(value), "unavailable"))
+
+head(value_new_category)
+view(value_new_category)
+```
+
+```{r}
+#Q7
+ggplot(value_new_category, aes(year, value)) +
+  geom_boxplot()
+coord_flip()
+```
+```{r}
+ggplot(value_new_category, aes(year, value)) +
+  geom_point()
+```
+```{r}
+library(outliers)
+x <- c("value")
+value_zscores <- scores(x, )
+```
+
