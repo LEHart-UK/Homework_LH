@@ -1,0 +1,61 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+
+```{r}
+library(readr)
+library(ggplot2)
+library(tidyverse)
+
+project_management <- read_csv("project_management.csv")
+
+project_management
+
+```
+
+```{r}
+project_management_model <- lm(formula = actual_length ~ estimated_length, data = project_management)
+
+project_management_model
+```
+
+```{r}
+fitted(object = project_management_model)
+```
+
+```{r}
+
+
+```
+```{r}
+plot(project_management$estimated_length, project_management$actual_length)
+
+predict_at <- data.frame(estimated_length = seq(0, 30, 1))
+predicted_y <- predict(object = project_management_model, newdata  = predict_at)
+
+lines(predict_at$estimated_length, predicted_y)  
+  
+```
+OUTLIER: estimated_length 22, actual_length 39
+
+```{r}
+plot(predict(project_management_model), resid(project_management_model))
+abline(0, 0)
+lines(loess.smooth(predict(project_management_model), resid(project_management_model)), lwd = 2, col = "red")
+```
+
+```{r}
+plot(predict(project_management_model), resid(project_management_model))
+abline(0, 0)
+```
+```{r}
+plot(project_management_model)
+```
+FINDINGS
+ - weak neagative correlation between estimated_length and actual_length 
+  - plot shows majoirty of data points are within the dashed Cook's distance line apart from point 50 (outlier) with a very different value from that predicted by the regression model) which appears to be influential and would warrant further evaluation.  
+
+
+
