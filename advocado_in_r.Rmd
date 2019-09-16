@@ -1,0 +1,138 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+library(readr)
+library(mosaicData)
+library(tidyverse)
+library(ggplot2)
+```
+
+```{r}
+advocado <- read_csv("avocado.csv")
+advocado
+```
+```{r}
+glimpse(advocado)
+```
+
+```{r}
+summary(advocado)
+```
+```{r}
+#replace na values with 0
+advocado <- advocado %>%
+              replace(is.na(.), 0)
+advocado
+```
+```{r}
+#creat dummy variables for categorical data
+#what are values /how many columns need
+#values
+unique(advocado[["type"]])
+#count
+length(unique(advocado[["type"]]))
+```
+```{r}
+#find rows where 'type' values equal to first item in list
+advocado[["type"]] == "conventional"
+```
+```{r}
+#turn "type" into numerical value
+numeric_values <- as.numeric(advocado[["type"]] == "conventional")
+numeric_values
+                               
+```
+```{r}
+#advocado[["type"]] == "organic"
+```
+
+```{r}
+#numeric_values_o <- as.numeric(advocado[["type"]] == "organic")
+#numeric_values_o
+```
+
+```{r}
+#add new column for type
+  advocado [["type_cat"]] <- numeric_values
+             
+#advocado[["type_c_or_o"]] <- numeric_values_c, numeric_values_o
+
+advocado
+```
+```{r}
+tail(advocado)
+#organic_value <- as.numeric(advocado[["type"]] == "organic")
+#organic_value                        
+```
+
+```{r}
+#redundant type column dropped
+
+```
+
+```{r}
+#region column (chr)
+
+unique(advocado[["region"]])
+#count
+length(unique(advocado[["region"]]))
+```
+```{r}
+#remove region column
+advocado <- subset(advocado, select = -c(region))
+advocado
+```
+```{r}
+#bins for continous data Average Price
+price_a_values<- as.numeric(advocado$AveragePrice > 1.00)
+advocado
+```
+```{r}
+advocado <- subset(advocado, select = -c(price_a))
+advocado
+```
+
+```{r}
+price_b_values <- as.numeric(advocado$AveragePrice >= 1.00 & advocado$AveragePrice < 2.00)
+price_c_values <- as.numeric(advocado$AveragePrice >= 2.00 & advocado$AveragePrice < 3.00)
+price_d_values <- as.numeric(advocado$AveragePrice > 3.00)
+advocado$price_b <- price_b_values
+advocado$price_c <- price_c_values
+advocado$price_d <- price_d_values
+advocado
+
+
+```
+
+```{r}
+  #delete AveragePrice column
+advocado
+```
+```{r}
+#scaling
+
+#standardize(advocado)
+```
+
+```{r}
+library(GGally)
+library(ggplot2)
+```
+
+```{r}
+
+
+```
+
+```{r}
+advocado_trim %>%
+  ggplot(aes(x = 4225, y = type_cat)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE)
+  
+
+```
+
