@@ -1,0 +1,74 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+library(readr)
+library(tidyverse)
+library(ggplot2)
+```
+
+```{r}
+house_sales <- read_csv("ames.csv")
+```
+
+```{r}
+head(house_sales)
+```
+
+```{r}
+glimpse(house_sales)
+```
+
+```{r}
+house_sales %>%
+  ggplot(aes(x = SalePrice)) +
+  geom_histogram()
+```
+
+```{r}
+#Popn parameter of saleprice
+params <- house_sales %>%
+  summarise(
+    mean_SalePrice = mean(SalePrice), 
+    
+  )
+params
+#SalePrice_poppram <-  mean(house_sales$SalePrice)
+#SalePrice_poppram
+```
+
+```{r}
+library(rcompanion)
+```
+
+```{r}
+#Sample 1000
+#summary_sample <- house_sales %>%
+  #sample_n(1000) %>%
+  #summarise(
+    #meanSalePrice = mean(SalePrice), 
+  #) 
+#summary_sample
+
+results_sample100 <- data.frame()
+for (i in 1:1000){
+  point_ests <- house_sales %>%
+    sample_n(100) %>%
+    summarise(
+      mean_SalePrice = mean(SalePrice),
+     
+    )
+  results_sample50 <- rbind(results_sample100, point_ests)
+}
+
+```
+
+
+```{r}
+#groupwiseMean to calc 95% CI for sample 1000
+groupwiseMean(SalePrice ~ 1, data = sample_100, conf = 0.95)
+```
+```
+
